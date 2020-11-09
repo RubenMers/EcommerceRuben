@@ -1,0 +1,138 @@
+﻿@model ML.Producto
+
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h3>Aqui se muestran los datos del producto</h3>
+
+    <div class=" row">
+        <div class=" col-md-12 col-sm-3">
+
+            @Html.ActionLink("Agregar Producto", "Form", "Producto", htmlAttributes: new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top:30px">
+    @*row para mostrar Producto*@
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <tr>
+                <th class="text-center" scope="col">
+                    Editar
+                </th>
+                <th class="text-center" scope="col">
+                    IdProducto
+                </th>
+                <th class="text-center" scope="col">
+                    Nombre
+                </th>
+                <th class="text-center" scope="col">
+                    Descripcion
+                </th>
+                <th class="text-center" scope="col">
+                    Pais de origen
+                </th>
+                <th class="text-center" scope="col">
+                    Precio
+                </th>
+                <th class="text-center" scope="col">
+                    SubCategoria
+                </th>
+                <th class="text-center" scope="col">
+                    Imagen
+                </th>
+                <th class="text-center" scope="col">
+                    Stock
+                </th>
+                <th class="text-center" scope="col">
+                    Status
+                </th>
+                <th class="text-center" scope="col">
+                    Eliminar
+                </th>
+            </tr>
+
+
+
+
+
+
+            @foreach (ML.Producto producto in Model.Productos)
+            {
+                <tr>
+                   
+                    <td class="text-center">
+                        <a href="@Url.Action("Form", "Producto", new { IdProducto = producto.IdProducto })">
+                            <img style="height: 20px; width: 20px" src="../Content/img/update.jfif" />
+                        </a>
+                        
+                    </td>
+
+                    <td class="text-center">
+                        @producto.IdProducto
+                    </td>
+
+                    <td class="text-center">
+                        @producto.Nombre
+                    </td>
+
+                    <td class="text-center">
+                        @producto.Descripcion
+                    </td>
+                    <td class="text-center">
+                        @producto.PaisOrigen
+                    </td>
+                    <td class="text-center">
+                        @producto.Precio
+                    </td>
+                    <td class="text-center">
+                        @producto.SubCategoria.Nombre
+                    </td>
+                    <td class="text-center">
+
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(@producto.LogoTipo)" style="height: 75px; width: 75px" />
+
+                    </td>
+                    <td class="text-center">
+                        @producto.Stock
+                    </td>
+                    <th class="text-center">
+                        <a href="@Url.Action("UpdateStatus", "Producto", new { IdProducto = producto.IdProducto, Status = producto.Status })" onclick="return confirm('Estas seguro que cambiar el status?');">
+                            @if (@producto.Status == false)
+                            {
+                                <img style="height: 20px; width: 20px;" src="../Content/img/rojo.png" class="img-responsive">
+                            }
+                            else
+                            {
+                                <img style="height: 20px; width:20px;" src="../Content/img/verde.png" class="img-responsive" />
+                            }
+                        </a>
+                    </th>
+                    <th class="text-center">
+                        <a href="@Url.Action("Delete", "Producto", new { IdProducto = producto.IdProducto })" onclick="return confirm('Estas seguro que deseas eliminar estos datos?');">
+                            <img style="height: 20px; width: 20px" src="../Content/img/borrar.png" />
+                        </a>
+                    </th>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+

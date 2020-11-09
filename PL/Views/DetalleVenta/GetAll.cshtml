@@ -1,0 +1,105 @@
+﻿@model ML.Result
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle Pedido</h2>
+@if (Model.Objects == null)
+{
+
+    <div class="">
+
+        <div class="d-flex flex-row-reverse">
+            <div class="col-md-12 col-md-offset-10">
+                <a href="@Url.Action("ProductoGetAll", "Venta")" class="btn btn-success">
+                    <i class="fas fa-plus-circle"></i>
+                    Realizar Compra
+                </a>
+            </div>
+        </div>
+
+        <br>
+    </div>
+}
+else
+{
+    <table class="table">
+
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">IdVenta</th>
+                <th scope="col">Imagen Producto</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">SubTotal</th>
+                <th scope="col">SubTotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.Producto producto in Model.Objects.ToList())
+            {
+                <tr>
+                    <td>@producto.DetalleVenta.Venta.IdVenta</td>
+                    <td width="15px" height="15px">
+                        @if (@producto.LogoTipo == null)
+                        {
+                            <img style="height: 100px; width: 100px;" src="/Images/NoAvailable.jpg" class="img-responsive">
+                        }
+                        else
+                        {
+                            <img style="height: 100px; width:100px;" src="data:image/png;base64,@producto.LogoTipo" />
+                        }
+                    </td>
+                    <td>
+                        <label>@producto.Nombre</label>
+                    </td>
+                    <td>
+                        <label>@producto.Precio</label>
+                    </td>
+                    <td>
+                        @producto.DetalleVenta.Cantidad
+                    </td>
+                    <td>
+                        @producto.DetalleVenta.Venta.Total
+                    </td>
+                    <td>
+                        @producto.DetalleVenta.Venta.IdCliente
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse">
+        <div class="col-md-offset-10">
+            @{
+            double total = 0;
+            foreach (ML.Producto producto in Model.Objects.ToList())
+            {
+                total = total + producto.DetalleVenta.Venta.Total;
+            }
+            <label>Total de la Compra: @total </label>
+            }
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.Pedido, new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Subcategoria.IdSubCategoria, new SelectList(Model.SubCategorias, "IdSubCategoria", "Nombre"), "Selecciona una opcion", new { @class = "formal-control" })
+            </div>
+        </div>*@
+
+            /*Este aun no lo ocupo*/
+            <div class="d-flex flex-row-reverse">
+                <div class="col-md-offset-10">
+                    <a href="@Url.Action("VerCompras", "DetalleVenta", "VerCompras")" class="btn btn-success">
+                        <i class="fas fa-money-bill-alt"></i>
+                        Ver Historial de Compras
+                    </a>
+                </div>
+            </div>
+}

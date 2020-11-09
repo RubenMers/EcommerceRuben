@@ -1,0 +1,252 @@
+﻿@model ML.Producto
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="../../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#Categoria").change(function () {//Categoria
+            $("#SubCategoria").empty();//SubCategoria
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetSubCategoria")',
+                dataType: 'json',
+                data: { IdCategoria: $("#Categoria").val() },
+                success: function (city) {
+                    $.each(city, function (i, city) {
+                        $("#SubCategoria").append('<option value="'
+                                                   + city.Value + '">'
+                                                   + city.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        });
+
+
+
+
+    })
+
+</script>
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="text-align:justify"></h2><br />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>@ViewBag.Titulo</h4>
+            <hr />
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm("Form", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="form-group hidden">
+            @Html.LabelFor(model => model.IdProducto, new { @class = "control-label col-md-2 hidden" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.IdProducto, new { @class = "form-control hidden", @readonly = true })
+                @Html.ValidationMessageFor(model => model.IdProducto)
+            </div>
+        </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Nombre, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Ingresar el Nombre" })
+                @Html.ValidationMessageFor(model => model.Nombre)
+            </div>
+        </div>
+
+        @*---------------------------------------------------------------------------------------------------*@
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Ingresar la descripcion" })
+                @Html.ValidationMessageFor(model => model.Descripcion)
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.PaisOrigen, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PaisOrigen, new { @class = "form-control", placeholder = "Ingresar el Pais de origen" })
+                @Html.ValidationMessageFor(model => model.PaisOrigen)
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Precio, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Precio, new { @class = "form-control", placeholder = "Ingresar el Precio" })
+                @Html.ValidationMessageFor(model => model.Precio)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.Stock, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", placeholder = "Ingresar el Precio" })
+                @Html.ValidationMessageFor(model => model.Stock)
+            </div>
+        </div>
+
+
+
+
+
+
+        @*----------------------------------------------------------------------------------------------------*@
+
+
+       
+        <div class="row">
+            @*Drop Down List Estados*@
+            <div class="col-md-1">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.SubCategoria.Categoria.IdCategoria, new { @class = "control-label" })
+                </div>
+                @if (Model.SubCategoria.Categoria.Categorias == null)
+                {
+                    @*model.Categoria.IdCategoria*@
+                    @Html.DropDownListFor(model => model.SubCategoria.Categoria.IdCategoria, new SelectList(string.Empty, "Value", "Text"), "Selecciona una categoria", htmlAttributes: new { id = "Categoria", @class = "form-control" })
+
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.SubCategoria.Categoria.IdCategoria, new SelectList(Model.SubCategoria.Categoria.Categorias, "IdCategoria", "Nombre"), "Selecciona una categoria", htmlAttributes: new { id = "Categoria", @classs = "form-control" })
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.SubCategoria.IdSubcategoria, new { @class = "control-label" })
+                @if (Model.SubCategoria.SubCategorias == null)
+                {
+                    @*model.SubCategoria.IdSubCategoria*@
+
+                    @Html.DropDownListFor(model => model.SubCategoria.IdSubcategoria, new SelectList(string.Empty, "Value", "Text"), "Selecciona una subCategoria", htmlAttributes: new { id = "SubCategoria", @class = "form-control" })
+
+                }
+                else
+                {
+
+                    @Html.DropDownListFor(model => model.SubCategoria.IdSubcategoria, new SelectList(Model.SubCategoria.SubCategorias, "IdSubCategoria", "Nombre"), "Selecciona una subCategoria", htmlAttributes: new { id = "SubCategoria", @classs = "form-control" })
+                }
+
+            </div>
+        </div>
+
+
+
+        <div class="card mb-8" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4" style="border:3px;border-color:black">
+                <img id="Imagen" src="#" alt="Imagen" style="height:190px;width:190px" />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+
+                    <p class="card-text">
+                        @Html.LabelFor(model => model.LogoTipo)
+                    </p>
+
+                    <form enctype="multipart/form-data">
+
+                        <input type="file" name="Imagen" onchange="readURL(this);">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="align-content-center">
+                <input type="submit" name="Upload" value="@ViewBag.Accion" class="btn btn-success" />
+                @Html.ActionLink("Cancelar", "GetAll", "Equipo", htmlAttributes: new { @class = "btn btn-danger", })
+            </div>
+        </div>
+    </div>
+
+
+
+        </div>
+    }
+
+</div>
+
+@*---------------------------Para agregar la imagen---------------------------------*@
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#Imagen').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+
+
+@*<div class="form-group">
+        <div class="row">
+            <div class="col-md-1">
+                <input type="submit" value="@ViewBag.Accion" class="btn btn-success" />
+            </div>
+            <div class="col-md-1">
+                @Html.ActionLink("Regresar", "GetAll", "Producto", htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+        }*@
+

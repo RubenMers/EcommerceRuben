@@ -1,0 +1,98 @@
+﻿@model ML.DetalleVenta
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h3>Historial de compras</h3>
+
+    @{Html.BeginForm("CreateDocument", "DetalleVenta", FormMethod.Get);
+    {
+        <div>
+            <input type="submit" value="Generar PDF" style="width:150px;height:27px" />
+        </div>
+    }
+    Html.EndForm();
+    }
+</div>
+
+<div class="row" style="padding-top:30px">
+    @*row para mostrar Producto*@
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <tr>
+                <th class="text-center" scope="col">
+                    IdVenta
+                </th>
+                <th class="text-center" scope="col">
+                    Nombre
+                </th>
+                <th class="text-center" scope="col">
+                    Descripcion
+                </th>
+                <th class="text-center" scope="col">
+                    Precio
+                </th>
+                <th class="text-center" scope="col">
+                    Fecha
+                </th>
+                <th class="text-center" scope="col">
+                    Cantidad
+                </th>
+                <th class="text-center" scope="col">
+                    Total
+                </th>
+            </tr>
+
+
+
+
+
+
+            @foreach (ML.DetalleVenta detalleVenta in Model.DetalleVentas)
+            {
+                <tr>
+                    <td class="text-center">
+                       @detalleVenta.Venta.IdVenta
+                    </td>
+
+                    <td class="text-center">
+                        @detalleVenta.Producto.Nombre
+                    </td>
+
+                    <td class="text-center">
+                        @detalleVenta.Producto.Descripcion
+                    </td>
+                    <td class="text-center">
+                        @detalleVenta.Producto.Precio
+                    </td>
+                    <td class="text-center">
+                        @detalleVenta.Venta.Fecha
+                    </td>
+                    <td class="text-center">
+                        @detalleVenta.Cantidad
+                    </td>
+                    <td class="text-center">
+                        @detalleVenta.Venta.Total
+                    </td>
+                    
+
+                </tr>
+            }
+
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
